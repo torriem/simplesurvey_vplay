@@ -1,0 +1,8 @@
+{
+    "title": "Vplaytest",
+    "identifier": "com.yourcompany.wizardTVAP.Vplaytest",
+    "orientation": "auto",
+    "versioncode": 1,
+    "versionname": "1.0",
+    "stage": "test"
+}
