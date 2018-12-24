@@ -2,6 +2,7 @@ import VPlayApps 1.0
 import QtQuick 2.0
 import QtPositioning 5.8
 import QtLocation 5.9
+import "utm.js" as Utm
 
 App {
     // You get free licenseKeys from https://v-play.net/licenseKey
@@ -14,10 +15,18 @@ App {
 
     property var latitude: undefined
     property var longitude: undefined
-    property real altitude: 0.0
-    property real heading: 0.0
+    property var altitude: undefined
+    property var heading: undefined
     property var horiz_acc: undefined
-    property real vert_acc: 0.0
+    property var vert_acc: undefined
+    property var easting: undefined
+    property var northing: undefined
+    property var utm_pseudo_zone: undefined
+    property real start_north: 0.0
+    property real start_east: 0.0
+    property real start_altitude: 0.0
+
+
 
     property Position ourPos
 
@@ -30,15 +39,22 @@ App {
             ourPos = position
 
             if (! isNaN(position.coordinate.latitude)) {
-                latitude = (position.coordinate.latitude).toFixed(7);
+                latitude = position.coordinate.latitude;
             } else {
                 latitude = undefined;
             }
 
             if (! isNaN(position.coordinate.longitude)) {
-                longitude = (position.coordinate.longitude).toFixed(7);
+                longitude = position.coordinate.longitude;
             } else {
                 longitude = undefined;
+            }
+
+            if (latitude !== undefined && longitude !== undefined &&
+                    utm_pseudo_zone !== undefined) {
+                var t = Utm.from_latlon(latitude,longitude,utm_pseudo_zone)
+                easting = t.easting
+                northing = t.northing
             }
 
             if (! isNaN(position.coordinate.altitude)) {
@@ -47,15 +63,20 @@ App {
 
             if (position.directionValid) {
                 heading = position.direction;
+            } else {
+                heading = undefined;
             }
 
             if (position.horizontalAccuracyValid) {
-                var _horiz_acc = position.horizontalAccuracy * 100;
-                horiz_acc = _horiz_acc.toFixed(1)
+                horiz_acc = position.horizontalAccuracy * 100;
+            } else {
+                horiz_acc = undefined;
             }
 
             if (position.verticalAccuracyValid) {
-                vert_acc = (position.verticalAccuracy * 100).toFixed(1);
+                vert_acc = position.verticalAccuracy * 100;
+            } else {
+                vert_acc = undefined;
             }
         }
     }
@@ -69,7 +90,16 @@ App {
             title: qsTr("Survey")
             icon: IconType.compass
 
-            MainPage {}
+            /*
+            AppFlickable {
+            anchors.fill: parent
+            contentWidth: survey_page.width
+            contentHeight: survey_page.height
+*/
+                MainPage {
+                    id: survey_page
+                }
+            //}
         }
         NavigationItem {
             title: qsTr("Settings")

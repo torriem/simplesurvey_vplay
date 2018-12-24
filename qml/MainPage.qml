@@ -1,25 +1,26 @@
 import VPlayApps 1.0
-import QtQuick 2.0
+import QtQuick 2.6
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 
 Page {
-    id: page
+    id: survey_page
     backgroundColor: Theme.secondaryBackgroundColor
 
     AppFlickable {
-        anchors.fill: parent
-        contentWidth: survey_column.width
+        contentWidth: survey_page.width
         contentHeight: survey_column.height
+        anchors.fill: parent
 
     Column {
         id: survey_column
-        anchors.fill: parent
-        //anchors.right: parent.right
-        //anchors.left: parent.left
-        //anchors.top: parent.top
-        anchors.margins: dp(5)
+        //anchors.fill: parent
+        width: survey_page.width
+        anchors.right: parent.right
+        anchors.left: parent.left
+        anchors.top: parent.top
         spacing: dp(20)
+        bottomPadding: dp(20)
 
         Rectangle {
             id: current_gps_source_rect
@@ -39,7 +40,7 @@ Page {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 id: gps_source_text
-                text: "<b>" + qsTr("GPS Source:") + "</b> " + ourPosition.name + ", " + ourPosition.nmeaSource
+                text: "<b>" + qsTr("GPS Source:") + "</b> " + ourPosition.name + ", " + ourPosition.nmeaSource+ ", " + ourPosition.supportedPositioningMethods
             }
         }
         DropShadow {
@@ -97,7 +98,7 @@ Page {
 
                 AppText {
                     id: gps_latitude
-                    text: latitude === undefined ? "" : latitude + qsTr("\u00b0")
+                    text: latitude === undefined ? "<i>unknown</i>" : latitude.toFixed(7) + qsTr("\u00b0")
                 }
 
                 AppText {
@@ -107,7 +108,7 @@ Page {
 
                 AppText {
                     id: gps_altitude
-                    text: altitude.toFixed(3) + " " + qsTr("m");
+                    text: altitude === undefined ? "<i>unknown</i>" : altitude.toFixed(2) + " " + qsTr("m");
                 }
 
                 AppText {
@@ -117,7 +118,7 @@ Page {
 
                 AppText {
                     id: gps_longitude
-                    text: longitude === undefined ? "" : longitude + qsTr("\u00b0")
+                    text: longitude === undefined ? "<i>unknown</i>" : longitude.toFixed(7) + qsTr("\u00b0")
                 }
 
                 AppText {
@@ -126,7 +127,7 @@ Page {
                 }
 
                 AppText {
-                    text: heading.toFixed(1) + " " + qsTr("\u00b0")
+                    text: heading === undefined? "<i>unknown</i>" : heading.toFixed(1) + " " + qsTr("\u00b0")
                 }
 
                 AppText {
@@ -135,7 +136,7 @@ Page {
                 }
 
                 AppText {
-                    text: horiz_acc === undefined ? "" : horiz_acc + " " + qsTr("cm")
+                    text: horiz_acc === undefined ? "" : horiz_acc.toFixed(1) + " " + qsTr("cm")
                 }
 
                 AppText {
@@ -200,7 +201,7 @@ Page {
                 }
 
                 AppText {
-                    text: ""
+                    text: northing === undefined ? "" : northing.toFixed(2) + " " + qsTr("m");
                 }
 
                 AppText {
@@ -209,7 +210,7 @@ Page {
                 }
 
                 AppText {
-                    text: altitude.toFixed(3) + " " + qsTr("m");
+                    text: altitude === undefined? "" : altitude.toFixed(3) + " " + qsTr("m");
                 }
 
                 AppText {
@@ -218,7 +219,7 @@ Page {
                 }
 
                 AppText {
-                    text: ""
+                    text: easting === undefined ? "" : easting.toFixed(2) + " " + qsTr("m");
                 }
 
                 AppText {
@@ -227,7 +228,7 @@ Page {
                 }
 
                 AppText {
-                    text: heading.toFixed(1) + " " + qsTr("\u00b0")
+                    text: heading===undefined ? "" : heading.toFixed(1) + " " + qsTr("\u00b0")
                 }
             }
         }
@@ -293,7 +294,7 @@ Page {
                 }
 
                 AppText {
-                    text: altitude.toFixed(3) + " " + qsTr("m");
+                    text: altitude===undefined ? "" : altitude.toFixed(3) + " " + qsTr("m");
                 }
 
                 AppText {
@@ -311,7 +312,7 @@ Page {
                 }
 
                 AppText {
-                    text: heading.toFixed(1) + " " + qsTr("\u00b0")
+                    text: heading===undefined? "" : heading.toFixed(1) + " " + qsTr("\u00b0")
                 }
             }
         }
@@ -331,30 +332,36 @@ Page {
         Row {
             //Layout.alignment: Qt.AlignHCenter
             anchors.horizontalCenter: parent.horizontalCenter
+            anchors.margins: dp(5)
+            height: children.height + dp(10)
 
-        AppButton {
-            id: start_button
-            text: "Start"
-            property bool reset: false
+            AppButton {
+                id: start_button
+                text: "Start"
+                property bool reset: false
+                enabled: (latitude !== undefined &&
+                          longitude !== undefined) ? true : false
 
-            onClicked: {
-                if (reset) {
-                    text = qsTr("Start")
-                    reset = false
-                    mark_button.enabled = false
-                } else {
-                    text = qsTr("Reset")
-                    reset = true
-                    mark_button.enabled = true
+                onClicked: {
+                    if (reset) {
+                        text = qsTr("Start")
+                        reset = false
+                        mark_button.enabled = false
+                    } else {
+                        utm_pseudo_zone = longitude
+
+                        text = qsTr("Reset")
+                        reset = true
+                        mark_button.enabled = true
+                    }
+
                 }
-
             }
-        }
-        AppButton {
-            id: mark_button
-            text: "Mark"
-            enabled: false
-        }
+            AppButton {
+                id: mark_button
+                text: "Mark"
+                enabled: false
+            }
         }
     }
     }
