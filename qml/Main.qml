@@ -50,9 +50,14 @@ App {
                 longitude = undefined;
             }
 
-            if (latitude !== undefined && longitude !== undefined &&
-                    utm_pseudo_zone !== undefined) {
-                var t = Utm.from_latlon(latitude,longitude,utm_pseudo_zone)
+            if (latitude !== undefined && longitude) {
+                var t;
+
+                if (utm_pseudo_zone !== undefined) {
+                    t = Utm.from_latlon(latitude,longitude,utm_pseudo_zone)
+                } else {
+                    t = Utm.from_latlon(latitude,longitude,longitude)
+                }
                 easting = t.easting
                 northing = t.northing
             }

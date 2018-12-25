@@ -2,6 +2,7 @@ import VPlayApps 1.0
 import QtQuick 2.6
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
+import "utm.js" as Utm
 
 Page {
     id: survey_page
@@ -20,12 +21,16 @@ Page {
         anchors.left: parent.left
         anchors.top: parent.top
         spacing: dp(20)
+
+        topPadding: dp(10)
         bottomPadding: dp(20)
+        leftPadding: dp(10)
+        //rightPadding: dp(50)
 
         Rectangle {
             id: current_gps_source_rect
             visible: false
-            width: parent.width
+            width: parent.width - dp(20)
             height: gps_source_text.height + dp(20)
             //height: 300
             //border.width: 1
@@ -59,7 +64,7 @@ Page {
         Rectangle {
             id: current_gps_rect
             visible: false
-            width: parent.width
+            width: parent.width - dp(20)
             height: gps_grid.height + dp(20)
             //height: 300
             //border.width: 1
@@ -163,7 +168,7 @@ Page {
         Rectangle {
             id: start_gps_rect
             visible: false
-            width: parent.width
+            width: parent.width - dp(20)
             height: start_gps_grid.height + dp(20)
             //height: 300
             //border.width: 1
@@ -201,7 +206,7 @@ Page {
                 }
 
                 AppText {
-                    text: northing === undefined ? "" : northing.toFixed(2) + " " + qsTr("m");
+                    text: start_north === undefined ? "" : (northing - start_north).toFixed(2) + " " + qsTr("m");
                 }
 
                 AppText {
@@ -210,7 +215,7 @@ Page {
                 }
 
                 AppText {
-                    text: altitude === undefined? "" : altitude.toFixed(3) + " " + qsTr("m");
+                    text: start_altitude === undefined? "" : (altitude - start_altitude).toFixed(3) + " " + qsTr("m");
                 }
 
                 AppText {
@@ -219,7 +224,7 @@ Page {
                 }
 
                 AppText {
-                    text: easting === undefined ? "" : easting.toFixed(2) + " " + qsTr("m");
+                    text: start_east === undefined ? "" : (easting - start_east).toFixed(2) + " " + qsTr("m");
                 }
 
                 AppText {
@@ -247,7 +252,7 @@ Page {
         Rectangle {
             id: mark_gps_rect
             visible: false
-            width: parent.width
+            width: parent.width - dp(20)
             height: mark_gps_grid.height + dp(20)
             //height: 300
             //border.width: 1
@@ -347,12 +352,20 @@ Page {
                         text = qsTr("Start")
                         reset = false
                         mark_button.enabled = false
+                        start_north = undefined
+                        start_east = undefined
                     } else {
+                        //Press start
                         utm_pseudo_zone = longitude
+                        var c = Utm.from_latlon(latitude,longitude,utm_pseudo_zone)
+                        start_east = c.easting
+                        start_north = c.northing
+                        start_altitude = altitude
 
                         text = qsTr("Reset")
                         reset = true
                         mark_button.enabled = true
+                        start_north
                     }
 
                 }
