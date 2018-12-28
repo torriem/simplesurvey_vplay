@@ -22,10 +22,14 @@ App {
     property var easting: undefined
     property var northing: undefined
     property var utm_pseudo_zone: undefined
-    property real start_north: 0.0
-    property real start_east: 0.0
+    property var start_north: undefined
+    property var start_east: undefined
     property real start_altitude: 0.0
+    property var mark_north: undefined
+    property var mark_east: undefined
+    property real mark_altitude: 0.0
 
+    property bool distance_3d: true
 
 
     property Position ourPos
@@ -109,12 +113,12 @@ App {
         NavigationItem {
             title: qsTr("Settings")
             icon: IconType.gears
-            Page {}
+            SettingsPage {}
         }
         NavigationItem {
             title: qsTr("About")
             icon: IconType.info
-            Page {}
+            AboutPage {}
         }
 
     }

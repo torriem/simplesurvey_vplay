@@ -51,4 +51,7 @@ macx {
 }
 
 DISTFILES += \
-    qml/utm.js
+    qml/utm.js \
+    qml/SettingsPage.qml \
+    qml/AboutPage.qml \
+    qml/util.js
