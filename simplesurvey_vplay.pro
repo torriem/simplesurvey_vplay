@@ -54,4 +54,5 @@ DISTFILES += \
     qml/utm.js \
     qml/SettingsPage.qml \
     qml/AboutPage.qml \
-    qml/util.js
+    qml/util.js \
+    qml/ExpandingRow2.qml
