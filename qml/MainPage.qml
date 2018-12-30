@@ -12,7 +12,7 @@ Page {
 
     AppFlickable {
         contentWidth: survey_page.width
-        contentHeight: survey_column.height
+        contentHeight: survey_column.height + dp(20)
         anchors.fill: parent
 
         Column {

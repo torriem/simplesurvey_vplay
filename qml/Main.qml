@@ -32,6 +32,9 @@ App {
 
     property bool distance_3d: false
     property bool use_inches: false
+    property bool use_tcp: false
+    property var tcp_hostname: undefined
+    property var tcp_port: undefined
 
 
     property Position ourPos
@@ -52,12 +55,26 @@ App {
             } else {
                 use_inches = v;
             }
+
+            tcp_hostname = config.getValue("tcp_hostname")
+            tcp_port = config.getValue("tcp_port")
+
+            v = config.getValue("use_tcp")
+            if ( v===undefined) {
+                use_tcp = false;
+            } else {
+                use_tcp = v;
+            }
+
+            if (use_tcp) {
+                    var url = "socket://"+tcp_hostname+":"+tcp_port
+                    ourPosition.nmeaSource = url
+            }
         }
     }
 
     PositionSource {
         id: ourPosition
-        nmeaSource: "socket://ltfrover:9001"
         active: true
         onPositionChanged: {
             ourPos = position

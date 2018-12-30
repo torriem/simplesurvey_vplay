@@ -4,99 +4,184 @@ import QtQuick 2.0
 Page {
     title: "Settings"
 
-    Column {
-        width: parent.width - dp(20)
-        y: dp(10)
-        spacing: dp(20)
-        anchors.horizontalCenter: parent.horizontalCenter
-        AppText {
-            text: qsTr("<b>General Settings</b>")
-            color: Theme.tintColor
-            fontSize: 18
-        }
+    AppFlickable {
+        contentWidth: parent.width
+        contentHeight: settings_column.height + dp(20)
+        anchors.fill: parent
 
         Column {
+            id: settings_column
             width: parent.width - dp(20)
-            spacing: dp(5)
+            y: dp(10)
+            spacing: dp(20)
             anchors.horizontalCenter: parent.horizontalCenter
+            AppText {
+                text: qsTr("<b>General Settings</b>")
+                color: Theme.tintColor
+                fontSize: 18
+            }
 
-            ExpandingRow2 {
+            Column {
+                width: parent.width - dp(20)
+                spacing: dp(5)
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                ExpandingRow2 {
+                    AppText {
+                        text: qsTr("Use inches")
+                        elide: Text.ElideLeft
+                        color: Theme.textColor
+                    }
+                    AppSwitch {
+                        id: metric_switch
+                        checked: use_inches
+                        onToggled: {
+                            config.setValue("use_inches",checked)
+                        }
+                    }
+
+                }
+
                 AppText {
-                    text: qsTr("Use inches")
-                    elide: Text.ElideLeft
+                    width: parent.width
+                    text: qsTr("Uses inches as the distance unit instead of metres");
+                    wrapMode: Text.WordWrap
+                    color: Theme.secondaryTextColor
+                }
+
+
+                Rectangle {
+                    width: parent.width
+                    height: dp(1)
+                    color: Theme.dividerColor
+                }
+
+                ExpandingRow2 {
+                    //width: parent.width
+                    width: parent.width
+
+                    AppText {
+                        text: qsTr("3D Distance")
+                        elide: Text.ElideLeft
+                        color: Theme.textColor
+
+                    }
+                    AppSwitch {
+                        id: dist_3d_switch
+                        checked: distance_3d
+                        onToggled: {
+                            distance_3d = checked
+                            config.setValue("dist3d",checked)
+                            //nativeUtils.displayMessageBox("Help!","Please help me!",1)
+                        }
+                    }
+                }
+                AppText {
+                    width: parent.width
+                    text: qsTr("If 3D Distance is on, distance calulations will also include the height. Otherwise it will only account for flat distance.")
+                    wrapMode: Text.WordWrap
+                    color: Theme.secondaryTextColor
+                }
+                Rectangle {
+                    width: parent.width
+                    height: dp(1)
+                    color: Theme.dividerColor
+                }
+
+            }
+            AppText {
+                text: qsTr("<b>GPS Source</b>")
+                color: Theme.tintColor
+                fontSize: 18
+            }
+
+            Column {
+                width: parent.width - dp(20)
+                spacing: dp(5)
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                ExpandingRow2 {
+                    AppText {
+                        text: qsTr("Use NMEA TCP Server")
+                        color: Theme.textColor
+                    }
+                    AppSwitch {
+                        id: use_tcp_switch
+                        checked: use_tcp
+                        onToggled: {
+                            config.setValue("use_tcp",checked)
+
+                            if (checked) {
+                                if (tcp_hostname != "" &&
+                                    tcp_port != "" ) {
+                                    var url = "socket://"+tcp_hostname+":"+tcp_port
+                                    ourPosition.nmeaSource = url
+                                } else {
+                                    checked = false;
+                                }
+                            } else {
+                                ourPosition.nmeaSource = ""
+                                nativeUtils.displayMessageBox("","Restart this app for this change to take effect.",1)
+                            }
+                        }
+                    }
+
+                }
+                AppText {
+                    width: parent.width
+                    text: qsTr("Use a TCP NMEA source if on, otherwise use built-in device location services.")
+                    wrapMode: Text.WordWrap
+                    color: Theme.secondaryTextColor
+                }
+
+                Rectangle {
+                    width: parent.width
+                    height: dp(1)
+                    color: Theme.dividerColor
+                }
+
+                AppText {
+                    text: qsTr("NMEA TCP Server")
                     color: Theme.textColor
                 }
-                AppSwitch {
-                    id: metric_switch
-                    checked: use_inches
-                    onToggled: {
-                        config.setValue("use_inches",checked)
+
+                //TODO: need better way to record the changes
+                //      and if the server is already enabled,
+                //      change the url parameters
+                AppTextField {
+                    width: parent.width
+                    placeholderText: qsTr("Hostname or IP Address")
+                    text: tcp_hostname !== undefined? tcp_hostname : ""
+                    id: hostname
+
+                    onEditingFinished: {
+                        tcp_hostname = text
+                        config.setValue("tcp_hostname",text)
                     }
                 }
 
-            }
-
-            AppText {
-                width: parent.width
-                text: qsTr("Uses inches as the distance unit instead of metres");
-                wrapMode: Text.WordWrap
-                color: Theme.secondaryTextColor
-            }
-
-
-            Rectangle {
-                width: parent.width
-                height: px(1)
-                color: Theme.dividerColor
-            }
-
-            Row {
-                //width: parent.width
-                id: row1
-                width: parent.width
-
-                function __update() {
-                    var field1 = children[0];
-                    field1.width = row1.width - children[1].width
-                }
-
-                onChildrenChanged: __update()
-                onVisibleChanged: __update()
-                onWidthChanged: __update()
-
                 AppText {
-                    text: qsTr("3D Distance")
-                    elide: Text.ElideLeft
-                    color: Theme.textColor
-
+                    text: qsTr("Port")
                 }
-                AppSwitch {
-                    id: dist_3d_switch
-                    checked: distance_3d
-                    onToggled: {
-                        distance_3d = checked
-                        config.setValue("dist3d",checked)
+
+                AppTextField {
+                    placeholderText: qsTr("Port number")
+                    id: portnumber
+                    text: tcp_port !== undefined ? tcp_port : ""
+                    validator: IntValidator {bottom: 0; top: 65535}
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    onEditingFinished: {
+                        tcp_port = text
+                        config.setValue("tcp_port",text)
                     }
                 }
-            }
-            AppText {
-                width: parent.width
-                text: qsTr("If 3D Distance is on, distance calulations will also include the height. Otherwise it will only account for flat distance.")
-                wrapMode: Text.WordWrap
-                color: Theme.secondaryTextColor
-            }
+                Rectangle {
+                    width: parent.width
+                    height: dp(1)
+                    color: Theme.dividerColor
+                }
 
-        }
-        AppText {
-            text: qsTr("<b>GPS Source</b>")
-            color: Theme.tintColor
-            fontSize: 18
-        }
-
-        Column {
-            width: parent.width - dp(20)
-            spacing: dp(5)
-            anchors.horizontalCenter: parent.horizontalCenter
+            }
         }
     }
 
