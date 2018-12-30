@@ -110,7 +110,7 @@ Page {
 
                     AppText {
                         id: gps_altitude
-                        text: altitude === undefined ? "<i>" + qsTr("unknown") + "</i>" : altitude.toFixed(2) + " " + qsTr("m");
+                        text: altitude === undefined ? "<i>" + qsTr("unknown") + "</i>" : Ssu.convert(altitude, use_inches)
                     }
 
                     AppText {
@@ -203,7 +203,7 @@ Page {
                     }
 
                     AppText {
-                        text: start_north === undefined ? "" : (northing - start_north).toFixed(2) + " " + qsTr("m");
+                        text: start_north === undefined ? "" : Ssu.convert(northing - start_north, use_inches);
                     }
 
                     AppText {
@@ -212,7 +212,7 @@ Page {
                     }
 
                     AppText {
-                        text: start_north === undefined? "" : (altitude - start_altitude).toFixed(2) + " " + qsTr("m");
+                        text: start_north === undefined? "" : Ssu.convert(altitude - start_altitude, use_inches)
                     }
 
                     AppText {
@@ -221,7 +221,7 @@ Page {
                     }
 
                     AppText {
-                        text: start_east === undefined ? "" : (easting - start_east).toFixed(2) + " " + qsTr("m");
+                        text: start_east === undefined ? "" : Ssu.convert(easting - start_east, use_inches)
                     }
 
                     AppText {
@@ -241,14 +241,12 @@ Page {
                     AppText {
                         //Should we take elevation changes into account when doing distance?
                         text: start_north !== undefined ?
-                                  ( distance_3d ? (Ssu.distance3d( easting - start_east,
+                                  ( distance_3d ? Ssu.convert(Ssu.distance3d( easting - start_east,
                                                                  northing - start_north,
-                                                                 altitude - start_altitude)
-                                                   ).toFixed(2)
-                                                : (Ssu.distance2d( easting - start_east,
-                                                                  northing - start_north)
-                                                   ).toFixed(2)
-                                   )  + " " + qsTr("m")
+                                                                 altitude - start_altitude), use_inches)
+                                                : Ssu.convert(Ssu.distance2d( easting - start_east,
+                                                                  northing - start_north), use_inches)
+                                   )
                                 : ""
                     }
 
@@ -319,7 +317,7 @@ Page {
                     }
 
                     AppText {
-                        text: mark_north === undefined ? "" : (northing - mark_north).toFixed(2) + " " + qsTr("m");
+                        text: mark_north === undefined ? "" : Ssu.convert(northing - mark_north, use_inches)
                     }
 
                     AppText {
@@ -328,7 +326,7 @@ Page {
                     }
 
                     AppText {
-                        text: mark_north === undefined? "" : (altitude - mark_altitude).toFixed(2) + " " + qsTr("m");
+                        text: mark_north === undefined? "" : Ssu.convert(altitude - mark_altitude, use_inches)
                     }
 
                     AppText {
@@ -337,7 +335,7 @@ Page {
                     }
 
                     AppText {
-                        text: mark_east === undefined ? "" : (easting - mark_east).toFixed(2) + " " + qsTr("m");
+                        text: mark_east === undefined ? "" : Ssu.convert(easting - mark_east, use_inches)
                     }
 
                     AppText {
@@ -357,14 +355,12 @@ Page {
                     AppText {
                         //Should we take elevation changes into account when doing distance?
                         text: mark_north !== undefined ?
-                                  ( distance_3d ? (Ssu.distance3d( easting - mark_east,
+                                  ( distance_3d ? Ssu.convert(Ssu.distance3d( easting - mark_east,
                                                                  northing - mark_north,
-                                                                 altitude - mark_altitude)
-                                                   ).toFixed(2)
-                                                : (Ssu.distance2d( easting - mark_east,
-                                                                  northing - mark_north)
-                                                   ).toFixed(2)
-                                   )  + " " + qsTr("m")
+                                                                 altitude - mark_altitude), use_inches)
+                                                : Ssu.convert(Ssu.distance2d( easting - mark_east,
+                                                                  northing - mark_north), use_inches)
+                                   )
                                 : ""
                     }
 

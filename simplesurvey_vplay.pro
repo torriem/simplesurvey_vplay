@@ -31,10 +31,6 @@ RESOURCES += #    resources.qrc # uncomment for publishing
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp
 
-lupdate_only {
-    SOURCES += qml/*.qml
-}
-
 android {
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
     OTHER_FILES += android/AndroidManifest.xml       android/build.gradle
@@ -58,5 +54,6 @@ DISTFILES += \
     qml/utm.js \
     qml/SettingsPage.qml \
     qml/AboutPage.qml \
+    qml/MainPage.qml \
     qml/util.js \
     qml/ExpandingRow2.qml

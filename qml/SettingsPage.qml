@@ -37,6 +37,7 @@ Page {
                         checked: use_inches
                         onToggled: {
                             config.setValue("use_inches",checked)
+                            use_inches = checked
                         }
                     }
 

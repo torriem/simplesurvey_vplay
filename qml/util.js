@@ -23,3 +23,19 @@ function slope_angle(x,y,z) {
 
     return 90.0;
 }
+
+function to_inches(metres) {
+    var whole_inches = ~~(metres / 0.0254);
+    var frac_inches = Math.round( (metres / 0.0254 - whole_inches) * 4 ) / 4;
+
+    return whole_inches + frac_inches;
+}
+
+function convert(metres, do_inches) {
+    if (do_inches) {
+        return (to_inches(metres)).toFixed(2) + " " + qsTr("in")
+    } else {
+        return metres.toFixed(2) + " " + qsTr("m");
+    }
+}
+
