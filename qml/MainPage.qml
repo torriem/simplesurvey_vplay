@@ -8,7 +8,7 @@ import "util.js" as Ssu
 Page {
     id: survey_page
     backgroundColor: Theme.secondaryBackgroundColor
-    title: "Survey"
+    title: qsTr("Survey")
 
     AppFlickable {
         contentWidth: survey_page.width
@@ -100,7 +100,7 @@ Page {
 
                     AppText {
                         id: gps_latitude
-                        text: latitude === undefined ? "<i>unknown</i>" : latitude.toFixed(7) + qsTr("\u00b0")
+                        text: latitude === undefined ? "<i>"+ qsTr("unknown") + "</i>" : latitude.toFixed(7) + qsTr("\u00b0")
                     }
 
                     AppText {
@@ -110,7 +110,7 @@ Page {
 
                     AppText {
                         id: gps_altitude
-                        text: altitude === undefined ? "<i>unknown</i>" : altitude.toFixed(2) + " " + qsTr("m");
+                        text: altitude === undefined ? "<i>" + qsTr("unknown") + "</i>" : altitude.toFixed(2) + " " + qsTr("m");
                     }
 
                     AppText {
@@ -120,7 +120,7 @@ Page {
 
                     AppText {
                         id: gps_longitude
-                        text: longitude === undefined ? "<i>unknown</i>" : longitude.toFixed(7) + qsTr("\u00b0")
+                        text: longitude === undefined ? "<i>" + qsTr("unknown") + "</i>" : longitude.toFixed(7) + qsTr("\u00b0")
                     }
 
                     AppText {
@@ -129,7 +129,7 @@ Page {
                     }
 
                     AppText {
-                        text: heading === undefined? "<i>unknown</i>" : heading.toFixed(1) + " " + qsTr("\u00b0")
+                        text: heading === undefined? "<i>" + qsTr("unknown") + "</i>" : heading.toFixed(1) + " " + qsTr("\u00b0")
                     }
 
                     AppText {

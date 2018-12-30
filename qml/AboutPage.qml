@@ -2,7 +2,7 @@ import VPlayApps 1.0
 import QtQuick 2.0
 
 Page {
-    title: "About"
+    title: qsTr("About")
 
     AppFlickable {
         contentWidth: parent.width
@@ -18,7 +18,7 @@ Page {
             anchors.horizontalCenter: parent.horizontalCenter
             AppText {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "<b>Simple Survey</b>"
+                text: "<b>" + qsTr("Simple Survey") + "</b>"
             }
             AppText {
                 width: parent.width

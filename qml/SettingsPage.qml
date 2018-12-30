@@ -16,7 +16,7 @@ Page {
             spacing: dp(20)
             anchors.horizontalCenter: parent.horizontalCenter
             AppText {
-                text: qsTr("<b>General Settings</b>")
+                text: "<b>" + qsTr("General Settings") + "</b>"
                 color: Theme.tintColor
                 fontSize: 18
             }
@@ -28,7 +28,7 @@ Page {
 
                 ExpandingRow2 {
                     AppText {
-                        text: qsTr("Use inches")
+                        text: "<b>" + qsTr("Use inches") + "</b>"
                         elide: Text.ElideLeft
                         color: Theme.textColor
                     }
@@ -61,7 +61,7 @@ Page {
                     width: parent.width
 
                     AppText {
-                        text: qsTr("3D Distance")
+                        text: "<b>" + qsTr("3D Distance") + "</b>"
                         elide: Text.ElideLeft
                         color: Theme.textColor
 
@@ -90,7 +90,7 @@ Page {
 
             }
             AppText {
-                text: qsTr("<b>GPS Source</b>")
+                text: "<b>" + qsTr("GPS Source") + "</b>"
                 color: Theme.tintColor
                 fontSize: 18
             }
@@ -102,7 +102,7 @@ Page {
 
                 ExpandingRow2 {
                     AppText {
-                        text: qsTr("Use NMEA TCP Server")
+                        text: "<b>" + qsTr("Use NMEA TCP Server") + "</b>"
                         color: Theme.textColor
                     }
                     AppSwitch {
@@ -120,7 +120,7 @@ Page {
                                     checked = false;
                                 }
                             } else {
-                                ourPosition.nmeaSource = ""
+                                //ourPosition.nmeaSource = ""
                                 nativeUtils.displayMessageBox("","Restart this app for this change to take effect.",1)
                             }
                         }
@@ -141,7 +141,7 @@ Page {
                 }
 
                 AppText {
-                    text: qsTr("NMEA TCP Server")
+                    text: "<b>" + qsTr("NMEA TCP Server") + "</b>"
                     color: Theme.textColor
                 }
 
@@ -161,7 +161,7 @@ Page {
                 }
 
                 AppText {
-                    text: qsTr("Port")
+                    text: "<b>" + qsTr("Port") + "</b>"
                 }
 
                 AppTextField {
