@@ -41,7 +41,7 @@ Page {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
                     id: gps_source_text
-                    text: "<b>" + qsTr("GPS Source:") + "</b> " + ourPosition.name + ", " + ourPosition.nmeaSource+ ", " + ourPosition.supportedPositioningMethods
+                    text: "<b>" + qsTr("GPS Source:") + "</b> " + ourPosition.name + " " + ourPosition.nmeaSource
                 }
             }
             DropShadow {
