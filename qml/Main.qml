@@ -130,7 +130,7 @@ App {
     Navigation {
 
         // Comment to use a navigation drawer instead of tabs on Android
-        navigationMode: navigationModeTabs
+        navigationMode: navigationModeTabsAndDrawer
 
         NavigationItem {
             title: qsTr("Survey")

@@ -234,7 +234,7 @@ Page {
                     }
 
                     AppText {
-                        text: distance_3d ? qsTr("3D Dist:") : qsTr("2D Dist:")
+                        text: distance_3d ? qsTr("Dist 3D:") : qsTr("Dist:")
                         font.bold: true
                     }
 
@@ -348,7 +348,7 @@ Page {
                     }
 
                     AppText {
-                        text: distance_3d ? qsTr("3D Dist:") : qsTr("2D Dist:")
+                        text: distance_3d ? qsTr("Dist 3D:") : qsTr("Dist:")
                         font.bold: true
                     }
 

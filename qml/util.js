@@ -26,6 +26,7 @@ function slope_angle(x,y,z) {
 
 function to_inches(metres) {
     var whole_inches = ~~(metres / 0.0254);
+    //return only nearest 1/4 fraction
     var frac_inches = Math.round( (metres / 0.0254 - whole_inches) * 4 ) / 4;
 
     return whole_inches + frac_inches;
