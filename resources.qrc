@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml</file>
+        <file>qml/AboutPage.qml</file>
+        <file>qml/config.json</file>
+        <file>qml/ExpandingRow2.qml</file>
+        <file>qml/Main.qml</file>
+        <file>qml/MainPage.qml</file>
+        <file>qml/SettingsPage.qml</file>
+        <file>qml/util.js</file>
+        <file>qml/utm.js</file>
     </qresource>
 </RCC>

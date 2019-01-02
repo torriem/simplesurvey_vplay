@@ -12,7 +12,7 @@ App {
     //  * Remove the V-Play Splash Screen or set a custom one (available with the Pro Licenses)
     //  * Add plugins to monetize, analyze & improve your apps (available with the Pro Licenses)
     //licenseKey: "<generate one from https://v-play.net/licenseKey>"
-    id: mainApp
+    id: app
 
     property var latitude: undefined
     property var longitude: undefined
@@ -39,27 +39,27 @@ App {
 
     property Position ourPos
 
-    Storage {
-        id: config
+    //Storage {
+    //    id: config
         Component.onCompleted:  {
-            var v = config.getValue("dist3d")
+            var v = settings.getValue("dist3d")
             if (v == undefined) {
                 distance_3d = false;
             } else {
                 distance_3d = v;
             }
 
-            v = config.getValue("use_inches")
+            v = settings.getValue("use_inches")
             if (v == undefined) {
                 use_inches = false;
             } else {
                 use_inches = v;
             }
 
-            tcp_hostname = config.getValue("tcp_hostname")
-            tcp_port = config.getValue("tcp_port")
+            tcp_hostname = settings.getValue("tcp_hostname")
+            tcp_port = settings.getValue("tcp_port")
 
-            v = config.getValue("use_tcp")
+            v = settings.getValue("use_tcp")
             if ( v===undefined) {
                 use_tcp = false;
             } else {
@@ -71,7 +71,7 @@ App {
                     ourPosition.nmeaSource = url
             }
         }
-    }
+    //}
 
     PositionSource {
         id: ourPosition

@@ -2,6 +2,7 @@ import VPlayApps 1.0
 import QtQuick 2.0
 
 Page {
+    id: settings_page
     title: "Settings"
 
     AppFlickable {
@@ -36,7 +37,7 @@ Page {
                         id: metric_switch
                         checked: use_inches
                         onToggled: {
-                            config.setValue("use_inches",checked)
+                            app.settings.setValue("use_inches",checked)
                             use_inches = checked
                         }
                     }
@@ -72,7 +73,7 @@ Page {
                         checked: distance_3d
                         onToggled: {
                             distance_3d = checked
-                            config.setValue("dist3d",checked)
+                            app.settings.setValue("dist3d",checked)
                             //nativeUtils.displayMessageBox("Help!","Please help me!",1)
                         }
                     }
@@ -101,36 +102,9 @@ Page {
                 spacing: dp(5)
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                ExpandingRow2 {
-                    AppText {
-                        text: "<b>" + qsTr("Use NMEA TCP Server") + "</b>"
-                        color: Theme.textColor
-                    }
-                    AppSwitch {
-                        id: use_tcp_switch
-                        checked: use_tcp
-                        onToggled: {
-                            config.setValue("use_tcp",checked)
-
-                            if (checked) {
-                                if (tcp_hostname != "" &&
-                                    tcp_port != "" ) {
-                                    var url = "socket://"+tcp_hostname+":"+tcp_port
-                                    ourPosition.nmeaSource = url
-                                } else {
-                                    checked = false;
-                                }
-                            } else {
-                                //ourPosition.nmeaSource = ""
-                                nativeUtils.displayMessageBox("","Restart this app for this change to take effect.",1)
-                            }
-                        }
-                    }
-
-                }
                 AppText {
                     width: parent.width
-                    text: qsTr("Use a TCP NMEA source if on, otherwise use built-in device location services.")
+                    text: qsTr("Normally this app uses the built-in GPS receiver. You can enable an external TCP NMEA source here.");
                     wrapMode: Text.WordWrap
                     color: Theme.secondaryTextColor
                 }
@@ -157,9 +131,12 @@ Page {
 
                     onEditingFinished: {
                         tcp_hostname = text
-                        config.setValue("tcp_hostname",text)
+                        app.settings.setValue("tcp_hostname",text)
                     }
-                }
+                    onActiveFocusChanged: {
+                        console.log("focus changed.")
+                    }
+                 }
 
                 AppText {
                     text: "<b>" + qsTr("Port") + "</b>"
@@ -173,14 +150,55 @@ Page {
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: {
                         tcp_port = text
-                        config.setValue("tcp_port",text)
+                        app.settings.setValue("tcp_port",text)
                     }
+                    onActiveFocusChanged: {
+                        console.log("focus changed.")
+                    }
+
                 }
                 Rectangle {
                     width: parent.width
                     height: dp(1)
                     color: Theme.dividerColor
                 }
+
+                ExpandingRow2 {
+                    AppText {
+                        text: "<b>" + qsTr("Use NMEA TCP Server") + "</b>"
+                        color: Theme.textColor
+                    }
+                    AppSwitch {
+                        id: use_tcp_switch
+                        checked: use_tcp
+                        enabled: (hostname.text.length > 0 && portnumber.text.length >0)
+                        onToggled: {
+                            if (checked) {
+                                //record the hostname and port fields
+                                tcp_port = portnumber.text
+                                app.settings.setValue("tcp_port",tcp_port)
+                                tcp_hostname = hostname.text
+                                app.settings.setValue("tcp_hostname",tcp_hostname)
+
+                                if (tcp_hostname != "" &&
+                                    tcp_port != "" ) {
+                                    var url = "socket://"+tcp_hostname+":"+tcp_port
+                                    ourPosition.nmeaSource = url
+                                } else {
+                                    checked = false;
+                                }
+                            } else {
+                                //ourPosition.nmeaSource = ""
+                                nativeUtils.displayMessageBox("","Restart this app for this change to take effect.",1)
+                            }
+
+                            app.settings.setValue("use_tcp",checked)
+
+                        }
+                    }
+
+                }
+
 
             }
         }
