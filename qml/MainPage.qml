@@ -230,7 +230,7 @@ Page {
                     }
 
                     AppText {
-                        text: start_north === undefined ? "" : (Math.atan2(easting - start_east, northing - start_north)).toFixed(1) + " " + qsTr("\u00b0")
+                        text: start_north === undefined ? "" : (Ssu.degrees(Math.atan2(easting - start_east, northing - start_north))).toFixed(1) + " " + qsTr("\u00b0")
                     }
 
                     AppText {
@@ -344,7 +344,7 @@ Page {
                     }
 
                     AppText {
-                        text: mark_north === undefined ? "" : (Math.atan2(easting - mark_east, northing - mark_north)).toFixed(1) + " " + qsTr("\u00b0")
+                        text: mark_north === undefined ? "" : (Ssu.degrees(Math.atan2(easting - mark_east, northing - mark_north))).toFixed(1) + " " + qsTr("\u00b0")
                     }
 
                     AppText {

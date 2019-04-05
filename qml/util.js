@@ -40,3 +40,11 @@ function convert(metres, do_inches) {
     }
 }
 
+function degrees(radians) {
+    var deg = radians * 180.0 / Math.PI;
+    if (deg < 0) {
+        return deg + 360.0;
+    }
+    
+    return deg;
+}
